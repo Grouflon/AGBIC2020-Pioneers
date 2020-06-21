@@ -3,7 +3,11 @@ guid: 8775b8d7df4e8b2479a8dedb3df59cd7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - idleMaterial: {fileID: 2100000, guid: 42ae14772af079e4d9dbe6e6baba4543, type: 2}
+  - hoverMaterial: {fileID: 2100000, guid: 7c848ed58d0962f4783abfd0a4e02837, type: 2}
+  - planetSlotPrefab: {fileID: 1855057040701845894, guid: f4ac40e7e6944e041b1bb5debe28c04f,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
