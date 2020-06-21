@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEditor;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-
 public class PlanetMeshController : MonoBehaviour
 {
     public int discSubdivisions = 64;
-    public float separationWidth = 1.0f;
+    public float separationWidth = 0.1f;
     public Material idleMaterial;
     public Material hoverMaterial;
 
@@ -21,7 +19,9 @@ public class PlanetMeshController : MonoBehaviour
 
     void Awake()
     {
-        planet = GetComponent<PlanetController>();
+        GenerateMesh();
+
+        planet = GetComponentInParent<PlanetController>();
         m_meshRenderer = GetComponent<MeshRenderer>();
 
         slotSockets = new Transform[planet.segments];
@@ -31,6 +31,7 @@ public class PlanetMeshController : MonoBehaviour
         {
             slotSockets[i] = slotsParent.GetChild(i);
         }
+
     }
 
     void Start()
@@ -66,7 +67,7 @@ public class PlanetMeshController : MonoBehaviour
     {
         MeshFilter meshFilter = GetComponent<MeshFilter>();
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        PlanetController p = GetComponent<PlanetController>();
+        PlanetController p = GetComponentInParent<PlanetController>();
 
         Transform slotsParent = transform.Find(s_slotsParentName);
         if (slotsParent != null)
@@ -171,19 +172,4 @@ public class PlanetMeshController : MonoBehaviour
     }
 
     MeshRenderer m_meshRenderer;
-}
-
-[CustomEditor(typeof(PlanetMeshController))]
-public class PlanetMeshControllerInspector : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-        PlanetMeshController o = (PlanetMeshController)target;
-        if (GUILayout.Button("Generate Mesh"))
-        {
-            o.GenerateMesh();
-        }
-    }
 }

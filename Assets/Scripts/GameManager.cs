@@ -3,9 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+public enum ResourceType
+{
+    Undefined,
+    Soil,
+    Minerals,
+    People,
+    Food,
+    Metal,
+}
+
 public class GameManager : MonoBehaviour
 {
-    public StructureController structurePrefab;
+    public float cycleDuration = 2.0f;
+    public float cycleTimeRatio = 1.0f;
+
+    public float totalGameTime { get; private set; }
+
+    [Header("Internal")]
+    public StructureController cityPrefab;
+    public StructureController farmPrefab;
 
     void Awake()
     {
@@ -14,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        totalGameTime = 0.0f;
+        m_cycleTimer = cycleDuration;
     }
 
     void Update()
@@ -38,14 +57,41 @@ public class GameManager : MonoBehaviour
 
         if (m_currentlyHoveredPlanet)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (m_currentlyHoveredPlanet.structures[m_currentlyHoveredSlot] == null)
             {
-                StructureController structure = Instantiate(structurePrefab);
-                m_currentlyHoveredPlanet.SetSlotStructure(m_currentlyHoveredSlot, structure);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    StructureController structure = Instantiate(cityPrefab);
+                    m_currentlyHoveredPlanet.SetSlotStructure(m_currentlyHoveredSlot, structure);
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    StructureController structure = Instantiate(farmPrefab);
+                    m_currentlyHoveredPlanet.SetSlotStructure(m_currentlyHoveredSlot, structure);
+                }
             }
-            if (Input.GetMouseButtonDown(1))
+            else
             {
-                m_currentlyHoveredPlanet.SetSlotStructure(m_currentlyHoveredSlot, null);
+                if (Input.GetMouseButtonDown(2))
+                {
+                    m_currentlyHoveredPlanet.SetSlotStructure(m_currentlyHoveredSlot, null);
+                }
+            }
+        }
+
+        // CYCLES
+        if (cycleDuration > 0.0f)
+        {
+            m_cycleTimer -= Time.deltaTime * cycleTimeRatio;
+            totalGameTime += (Time.deltaTime * cycleTimeRatio) / cycleDuration;
+            while (m_cycleTimer <= 0.0f)
+            {
+                m_cycleTimer += cycleDuration;
+
+                foreach (PlanetController planet in m_planets)
+                {
+                    planet.OnCycle();
+                }
             }
         }
     }
@@ -93,6 +139,7 @@ public class GameManager : MonoBehaviour
     List<PlanetController> m_planets;
     PlanetController m_currentlyHoveredPlanet;
     int m_currentlyHoveredSlot = -1;
+    float m_cycleTimer = 0.0f;
 
     public static GameManager Get()
     {

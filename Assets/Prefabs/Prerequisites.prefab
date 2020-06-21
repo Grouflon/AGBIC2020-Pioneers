@@ -74,5 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cccfb1627384b46a3bcbece3e5cd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structurePrefab: {fileID: 8908864638872077859, guid: 1bb538b7f6cf76847a81255abde8a233,
+  cycleDuration: 2
+  cycleTimeRatio: 1
+  cityPrefab: {fileID: 4982558075577616504, guid: 1bb538b7f6cf76847a81255abde8a233,
+    type: 3}
+  farmPrefab: {fileID: 4982558075577616504, guid: aeb7e53c097abfd47a0e5fc14bae3834,
     type: 3}
