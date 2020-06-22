@@ -16,9 +16,10 @@ public enum ResourceType
 public class GameManager : MonoBehaviour
 {
     public float cycleDuration = 2.0f;
-    public float cycleTimeRatio = 1.0f;
+    public float cycleTimeMultiplier = 1.0f;
 
-    public float totalGameTime { get; private set; }
+    public float totalCycles { get; private set; }
+    public float deltaCycles { get; private set; }
 
     [Header("Internal")]
     public StructureController cityPrefab;
@@ -31,8 +32,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        totalGameTime = 0.0f;
-        m_cycleTimer = cycleDuration;
+        totalCycles = 0.0f;
+        m_cycleTimer = 1.0f;
     }
 
     void Update()
@@ -82,11 +83,12 @@ public class GameManager : MonoBehaviour
         // CYCLES
         if (cycleDuration > 0.0f)
         {
-            m_cycleTimer -= Time.deltaTime * cycleTimeRatio;
-            totalGameTime += (Time.deltaTime * cycleTimeRatio) / cycleDuration;
+            deltaCycles = (Time.deltaTime * cycleTimeMultiplier) / cycleDuration;
+            m_cycleTimer -= deltaCycles;
+            totalCycles += deltaCycles;
             while (m_cycleTimer <= 0.0f)
             {
-                m_cycleTimer += cycleDuration;
+                m_cycleTimer += 1.0f;
 
                 foreach (PlanetController planet in m_planets)
                 {

@@ -14,6 +14,6 @@ public class RotateAroundAxis : MonoBehaviour
 
     void Update()
     {
-        transform.rotation = Quaternion.AngleAxis(Time.deltaTime * rotationSpeed, axis) * transform.rotation;
+        transform.rotation = Quaternion.AngleAxis(GameManager.Get().deltaCycles * rotationSpeed, axis) * transform.rotation;
     }
 }

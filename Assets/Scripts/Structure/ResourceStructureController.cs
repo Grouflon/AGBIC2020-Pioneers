@@ -129,7 +129,7 @@ public class ResourceStructureController : StructureController
         if (shouldAnimate)
         {
             Vector3 scale = transform.localScale;
-            scale.y = 1.0f + Mathf.Sin(GameManager.Get().totalGameTime * (Mathf.PI * 2.0f) * 2.0f) * 0.2f;
+            scale.y = 1.0f + Mathf.Sin(GameManager.Get().totalCycles * (Mathf.PI * 2.0f) * 2.0f) * 0.2f;
             transform.localScale = scale;
         }
         else
